@@ -2,7 +2,13 @@ package com.suhel.expensetracker.model;
 
 import java.util.Date;
 
-public class Balance {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Balance extends RealmObject {
+
+    @PrimaryKey
+    private long id;
 
     private float balance;
     private Date lastUpdated;
@@ -10,9 +16,18 @@ public class Balance {
     public Balance() {
     }
 
-    public Balance(float balance, Date lastUpdated) {
+    public Balance(long id, float balance, Date lastUpdated) {
+        this.id = id;
         this.balance = balance;
         this.lastUpdated = lastUpdated;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public float getBalance() {

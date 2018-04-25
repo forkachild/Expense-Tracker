@@ -4,6 +4,7 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
+        android:background="@android:color/white"
         android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
@@ -12,12 +13,22 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                app:titleTextColor="@android:color/white"
-                app:subtitleTextColor="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize" />
 
         </android.support.design.widget.AppBarLayout>
+
+        <TextView
+            android:id="@+id/tvPlaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="32dp"
+            android:gravity="center"
+            android:text="@string/text_placeholder"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="13pt"
+            android:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
@@ -35,7 +46,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:src="@drawable/ic_attach_money"
-            android:tint="@color/colorPrimary"
+            android:tint="@android:color/black"
             app:backgroundTint="@android:color/white"
             app:fabSize="normal" />
 

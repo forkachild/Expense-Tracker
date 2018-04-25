@@ -15,7 +15,7 @@ import java.util.Locale;
 
 public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.ExpenseListViewHolder> {
 
-    private DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+    private DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy . hh:mm", Locale.getDefault());
     private List<Expense> data;
 
     @NonNull
@@ -32,7 +32,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
     }
 
     private Expense getItem(int position) {
-        return data.get(position);
+        return data.get(getItemCount() - position - 1);
     }
 
     @Override
@@ -55,9 +55,14 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         }
 
         void bind(Expense expense) {
-            binding.tvAmount.setText(String.format(Locale.getDefault(), "%,.2f", expense.getAmount()));
+            boolean isCredit = expense.getType().equals("Credit");
+            binding.tvAmount.setText(String.format(Locale.getDefault(), "%s%,.2f",
+                    isCredit ? "+" : "-", expense.getAmount()));
+            binding.tvAmount.setTextColor(isCredit ? 0xFF4CAF50 : 0xFFE53935);
             binding.tvReason.setText(expense.getReason());
+            binding.tvComment.setText(expense.getComment());
             binding.tvDate.setText(dateFormat.format(expense.getDate()));
+            binding.tvCumulativeBalance.setText(String.format(Locale.getDefault(), "%,.2f", expense.getCumulativeBalance()));
         }
 
     }
