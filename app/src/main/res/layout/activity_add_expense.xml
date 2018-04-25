@@ -101,6 +101,7 @@
                         android:inputType="textMultiLine|textNoSuggestions|textCapSentences"
                         android:maxHeight="64dp"
                         android:maxLines="10"
+                        android:scrollbars="vertical"
                         android:textColor="@android:color/black"
                         android:textSize="8pt" />
 
