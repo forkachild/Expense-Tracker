@@ -126,6 +126,8 @@ public class Expense extends RealmObject {
         TRANSPORT,
         OTHER;
 
+        public static final Reason[] values = values();
+
         public static Reason fromString(String string) {
             switch (string) {
 
@@ -169,19 +171,6 @@ public class Expense extends RealmObject {
 
                     return OTHER;
             }
-        }
-
-        public static Reason[] getAll() {
-            return new Reason[]{FOOD,
-                    HOTEL,
-                    CIGARETTE,
-                    FUEL,
-                    ALCOHOL,
-                    SHOPPING,
-                    LOAN,
-                    SALARY,
-                    TRANSPORT,
-                    OTHER};
         }
 
         @Override

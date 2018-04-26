@@ -46,7 +46,6 @@
                         android:hint="@string/hint_amount"
                         android:inputType="numberDecimal"
                         android:paddingTop="4dp"
-                        android:text="@string/default_amount"
                         android:textColor="@android:color/black"
                         android:textSize="14pt" />
 

@@ -7,27 +7,25 @@ import io.realm.annotations.PrimaryKey;
 
 public class Balance extends RealmObject {
 
-    @PrimaryKey
-    private long id;
-
+    private String reason;
     private float balance;
     private Date lastUpdated;
 
     public Balance() {
     }
 
-    public Balance(long id, float balance, Date lastUpdated) {
-        this.id = id;
+    public Balance(String reason, float balance, Date lastUpdated) {
+        this.reason = reason;
         this.balance = balance;
         this.lastUpdated = lastUpdated;
     }
 
-    public long getId() {
-        return id;
+    public String getReason() {
+        return reason;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public float getBalance() {

@@ -29,7 +29,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         binding.btnSave.setOnClickListener(v -> save());
         binding.reasonList.setLayoutManager(new GridLayoutManager(this, 2));
         binding.reasonList.setAdapter(adapter);
-        adapter.setData(Expense.Reason.getAll());
+        adapter.setData(Expense.Reason.values);
     }
 
     @Override

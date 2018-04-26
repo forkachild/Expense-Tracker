@@ -36,7 +36,7 @@ public class ExpenseListActivity extends AppCompatActivity {
         binding.btnAddExpense.setOnClickListener(v -> startActivity(
                 new Intent(ExpenseListActivity.this, AddExpenseActivity.class)));
 
-        Expense.Reason[] reasons = Expense.Reason.getAll();
+        Expense.Reason[] reasons = Expense.Reason.values;
         filterBy = new String[reasons.length + 1];
         filterBy[0] = "All";
         for (int i = 0; i < reasons.length; i++)
@@ -63,29 +63,27 @@ public class ExpenseListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        List<Expense> data = ExpenseEngine.getInstance().getExpenses();
-        binding.tvPlaceholder.setVisibility((data == null || data.isEmpty())
-                ? View.VISIBLE : View.GONE);
-        adapter.setData(data);
-        float currentBalance = ExpenseEngine.getInstance().getBalance();
-        binding.tvCurrentBalance.setText(String.format(Locale.getDefault(), "%,.2f", currentBalance));
+        reloadData();
     }
 
     private void reloadData() {
         List<Expense> data;
 
         int filterSelection = binding.sortBy.getSelectedItemPosition();
+        float currentBalance;
 
         switch (filterSelection) {
 
             case 0:
 
                 data = ExpenseEngine.getInstance().getExpenses();
+                currentBalance = ExpenseEngine.getInstance().getMainBalance();
                 break;
 
             default:
 
                 data = ExpenseEngine.getInstance().getExpenses(filterBy[filterSelection]);
+                currentBalance = ExpenseEngine.getInstance().getBalance(filterBy[filterSelection]);
                 break;
 
         }
@@ -93,6 +91,7 @@ public class ExpenseListActivity extends AppCompatActivity {
         binding.tvPlaceholder.setVisibility((data == null || data.isEmpty())
                 ? View.VISIBLE : View.GONE);
         adapter.setData(data);
+        binding.tvCurrentBalance.setText(String.format(Locale.getDefault(), "%,.2f", currentBalance));
     }
 
 }

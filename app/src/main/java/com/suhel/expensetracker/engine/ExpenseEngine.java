@@ -25,44 +25,81 @@ public class ExpenseEngine {
         return Realm.getDefaultInstance().where(Expense.class).findAll();
     }
 
-    public synchronized List<Expense> getExpenses(String filterBy) {
-        return Realm.getDefaultInstance().where(Expense.class).equalTo("reason", filterBy).findAll();
+    public synchronized List<Expense> getExpenses(String reason) {
+        return Realm.getDefaultInstance().where(Expense.class).equalTo("reason", reason).findAll();
     }
 
     public synchronized void addExpense(float amount, Expense.Type type, Expense.Reason reason, String comment) {
         Realm.getDefaultInstance().executeTransaction((realm) -> {
-            Balance balanceObj = realm.where(Balance.class).equalTo("id", 1L).findFirst();
-
-            float balance = 0.0f;
-
-            if (balanceObj != null)
-                balance = balanceObj.getBalance();
-
-            if (type == Expense.Type.CREDIT)
-                balance += amount;
-            else
-                balance -= amount;
-
-            if (balanceObj != null) {
-                balanceObj.setBalance(balance);
-                balanceObj.setLastUpdated(Calendar.getInstance().getTime());
-                realm.copyToRealmOrUpdate(balanceObj);
-            } else {
-                balanceObj = new Balance(1L, balance, Calendar.getInstance().getTime());
-                realm.copyToRealm(balanceObj);
-            }
-
+            float balance = updateMainBalance(realm, type, amount);
+            updateReasonBalance(realm, type, reason, amount);
             Expense expense = new Expense(amount, balance, type, reason, comment);
             realm.copyToRealm(expense);
         });
     }
 
-    public synchronized float getBalance() {
+    public synchronized float getMainBalance() {
         Realm realm = Realm.getDefaultInstance();
-        Balance balance = realm.where(Balance.class).equalTo("id", 1L).findFirst();
+        Balance balance = realm.where(Balance.class).equalTo("reason", "All").findFirst();
         if (balance == null)
             return 0.0f;
         return balance.getBalance();
+    }
+
+    public synchronized float getBalance(String reason) {
+        Realm realm = Realm.getDefaultInstance();
+        Balance balance = realm.where(Balance.class).equalTo("reason", reason).findFirst();
+        if (balance == null)
+            return 0.0f;
+        return balance.getBalance();
+    }
+
+    private float updateMainBalance(Realm realm, Expense.Type type, float amount) {
+        Balance balanceObj = realm.where(Balance.class).equalTo("reason", "All").findFirst();
+        float balance = 0.0f;
+
+        if (balanceObj != null)
+            balance = balanceObj.getBalance();
+
+        if (type == Expense.Type.CREDIT)
+            balance += amount;
+        else
+            balance -= amount;
+
+        if (balanceObj != null) {
+            balanceObj.setBalance(balance);
+            balanceObj.setLastUpdated(Calendar.getInstance().getTime());
+//            realm.copyToRealmOrUpdate(balanceObj);
+        } else {
+            balanceObj = new Balance("All", balance, Calendar.getInstance().getTime());
+            realm.copyToRealm(balanceObj);
+        }
+
+        return balance;
+    }
+
+    private void updateReasonBalance(Realm realm, Expense.Type type, Expense.Reason reason, float amount) {
+        Balance balanceObj = realm.where(Balance.class).equalTo("reason",
+                reason.toString()).findFirst();
+
+        float balance = 0.0f;
+
+        if (balanceObj != null)
+            balance = balanceObj.getBalance();
+
+        if (type == Expense.Type.CREDIT)
+            balance += amount;
+        else
+            balance -= amount;
+
+        if (balanceObj != null) {
+            balanceObj.setBalance(balance);
+            balanceObj.setLastUpdated(Calendar.getInstance().getTime());
+//            realm.copyToRealmOrUpdate(balanceObj);
+        } else {
+            balanceObj = new Balance(reason.toString(), balance, Calendar.getInstance().getTime());
+            realm.copyToRealm(balanceObj);
+        }
     }
 
 }
