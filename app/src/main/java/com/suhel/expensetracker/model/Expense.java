@@ -122,6 +122,8 @@ public class Expense extends RealmObject {
         ALCOHOL,
         SHOPPING,
         LOAN,
+        SALARY,
+        TRANSPORT,
         OTHER;
 
         public static Reason fromString(String string) {
@@ -155,6 +157,14 @@ public class Expense extends RealmObject {
 
                     return LOAN;
 
+                case "Salary":
+
+                    return SALARY;
+
+                case "Transport":
+
+                    return TRANSPORT;
+
                 default:
 
                     return OTHER;
@@ -169,6 +179,8 @@ public class Expense extends RealmObject {
                     ALCOHOL,
                     SHOPPING,
                     LOAN,
+                    SALARY,
+                    TRANSPORT,
                     OTHER};
         }
 
@@ -203,6 +215,14 @@ public class Expense extends RealmObject {
                 case LOAN:
 
                     return "Loan";
+
+                case SALARY:
+
+                    return "Salary";
+
+                case TRANSPORT:
+
+                    return "Transport";
 
                 default:
 

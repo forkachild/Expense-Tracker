@@ -41,8 +41,13 @@ public class AddExpenseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @NonNull
+    private String getAmountString() {
+        return binding.txtAmount.getText().toString().trim();
+    }
+
     private float getAmount() {
-        return Float.parseFloat(binding.txtAmount.getText().toString().trim());
+        return Float.parseFloat(getAmountString());
     }
 
     @NonNull
@@ -64,10 +69,25 @@ public class AddExpenseActivity extends AppCompatActivity {
         return binding.txtComment.getText().toString().trim();
     }
 
+    private boolean validate() {
+        boolean flag = true;
+
+        if (getAmountString().isEmpty()) {
+            binding.errorAmount.setError(getString(R.string.error_amount));
+            flag = false;
+        } else {
+            binding.errorAmount.setError(null);
+        }
+
+        return flag;
+    }
+
     private void save() {
-        ExpenseEngine.getInstance().addExpense(getAmount(), getType(), getReason(),
-                getComment());
-        onBackPressed();
+        if (validate()) {
+            ExpenseEngine.getInstance().addExpense(getAmount(), getType(), getReason(),
+                    getComment());
+            onBackPressed();
+        }
     }
 
 }

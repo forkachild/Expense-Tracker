@@ -3,6 +3,7 @@ package com.suhel.expensetracker.view.expenseList;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.suhel.expensetracker.databinding.ItemExpenseBinding;
@@ -60,6 +61,8 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
                     isCredit ? "+" : "-", expense.getAmount()));
             binding.tvAmount.setTextColor(isCredit ? 0xFF4CAF50 : 0xFFE53935);
             binding.tvReason.setText(expense.getReason());
+            binding.tvComment.setVisibility((expense.getComment() == null
+                    || expense.getComment().isEmpty()) ? View.GONE : View.VISIBLE);
             binding.tvComment.setText(expense.getComment());
             binding.tvDate.setText(dateFormat.format(expense.getDate()));
             binding.tvCumulativeBalance.setText(String.format(Locale.getDefault(), "%,.2f", expense.getCumulativeBalance()));

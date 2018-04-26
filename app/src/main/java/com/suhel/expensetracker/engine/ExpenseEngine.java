@@ -25,6 +25,10 @@ public class ExpenseEngine {
         return Realm.getDefaultInstance().where(Expense.class).findAll();
     }
 
+    public synchronized List<Expense> getExpenses(String filterBy) {
+        return Realm.getDefaultInstance().where(Expense.class).equalTo("reason", filterBy).findAll();
+    }
+
     public synchronized void addExpense(float amount, Expense.Type type, Expense.Reason reason, String comment) {
         Realm.getDefaultInstance().executeTransaction((realm) -> {
             Balance balanceObj = realm.where(Balance.class).equalTo("id", 1L).findFirst();

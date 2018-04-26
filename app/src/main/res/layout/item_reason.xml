@@ -9,13 +9,13 @@
         android:focusable="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="4dp">
 
         <ImageView
             android:id="@+id/imgCheck"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:scaleType="center"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_check"
             android:tint="@color/colorAccent" />
 

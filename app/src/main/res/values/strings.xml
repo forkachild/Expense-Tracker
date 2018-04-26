@@ -12,5 +12,7 @@
     <string name="hint_comment">Comment</string>
     <string name="text_save">Save</string>
     <string name="title_add_expense">Add Expense</string>
-    <string name="text_placeholder">No expenses! You are lucky</string>
+    <string name="text_placeholder">No expenses?\nYou are lucky!</string>
+    <string name="default_amount">0</string>
+    <string name="error_amount">Please enter a valid amount</string>
 </resources>
