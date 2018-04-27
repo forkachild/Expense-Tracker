@@ -1,11 +1,13 @@
 package com.suhel.expensetracker.view.addExpense;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
+import com.suhel.expensetracker.R;
 import com.suhel.expensetracker.databinding.ItemReasonBinding;
 import com.suhel.expensetracker.model.Expense;
 
@@ -59,7 +61,10 @@ public class ReasonAdapter extends RecyclerView.Adapter<ReasonAdapter.ReasonView
         }
 
         void bind(Expense.Reason reason) {
-            binding.imgCheck.setVisibility(getAdapterPosition() == selection ? View.VISIBLE : View.INVISIBLE);
+            boolean isSelected = getAdapterPosition() == selection;
+            binding.root.setBackgroundResource(isSelected ? R.drawable.bg_rounded_corner_blue
+                    : R.drawable.bg_rounded_corner_grey);
+            binding.tvReason.setTextColor(isSelected ? Color.WHITE : Color.BLACK);
             binding.tvReason.setText(reason.toString());
         }
 

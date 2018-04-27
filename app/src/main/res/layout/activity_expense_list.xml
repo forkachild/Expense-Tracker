@@ -16,11 +16,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize">
 
-                <Spinner
-                    android:id="@+id/sortBy"
+                <com.jaredrummler.materialspinner.MaterialSpinner
+                    android:id="@+id/filterBy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end" />
+                    android:layout_gravity="end|center_vertical" />
 
             </android.support.v7.widget.Toolbar>
 
@@ -67,7 +67,7 @@
             android:layout_gravity="left|bottom"
             android:layout_marginBottom="24dp"
             android:background="@drawable/bg_half_rounded_corner_blue"
-            android:elevation="7dp"
+            android:elevation="4dp"
             android:orientation="vertical"
             android:paddingBottom="8dp"
             android:paddingEnd="24dp"

@@ -5,9 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.view.MenuItem;
 
+import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
+import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration;
 import com.suhel.expensetracker.R;
 import com.suhel.expensetracker.databinding.ActivityAddExpenseBinding;
 import com.suhel.expensetracker.engine.ExpenseEngine;
@@ -27,7 +28,18 @@ public class AddExpenseActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.btnCancel.setOnClickListener(v -> onBackPressed());
         binding.btnSave.setOnClickListener(v -> save());
-        binding.reasonList.setLayoutManager(new GridLayoutManager(this, 2));
+
+        ChipsLayoutManager layoutManager = ChipsLayoutManager.newBuilder(this)
+                .setScrollingEnabled(true)
+                .build();
+
+        binding.reasonList.addItemDecoration(
+                new SpacingItemDecoration(
+                        getResources().getDimensionPixelOffset(R.dimen.chips_horizontal_margin),
+                        getResources().getDimensionPixelOffset(R.dimen.chips_vertical_margin)
+                ));
+
+        binding.reasonList.setLayoutManager(layoutManager);
         binding.reasonList.setAdapter(adapter);
         adapter.setData(Expense.Reason.values);
     }

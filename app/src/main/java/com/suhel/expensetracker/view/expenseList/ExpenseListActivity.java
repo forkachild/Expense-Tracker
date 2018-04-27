@@ -7,15 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
+import com.jaredrummler.materialspinner.MaterialSpinner;
+import com.jaredrummler.materialspinner.MaterialSpinnerAdapter;
 import com.suhel.expensetracker.R;
 import com.suhel.expensetracker.databinding.ActivityExpenseListBinding;
 import com.suhel.expensetracker.engine.ExpenseEngine;
 import com.suhel.expensetracker.model.Expense;
 import com.suhel.expensetracker.view.addExpense.AddExpenseActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,7 +25,7 @@ public class ExpenseListActivity extends AppCompatActivity {
     private ActivityExpenseListBinding binding;
     private ExpenseListAdapter adapter = new ExpenseListAdapter();
 
-    private String[] filterBy;
+    private List<String> filterByList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,27 +38,14 @@ public class ExpenseListActivity extends AppCompatActivity {
                 new Intent(ExpenseListActivity.this, AddExpenseActivity.class)));
 
         Expense.Reason[] reasons = Expense.Reason.values;
-        filterBy = new String[reasons.length + 1];
-        filterBy[0] = "All";
+        filterByList = new ArrayList<>(reasons.length + 1);
+        filterByList.add("All");
         for (int i = 0; i < reasons.length; i++)
-            filterBy[i + 1] = reasons[i].toString();
-        ArrayAdapter<String> filterByAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, filterBy);
-        filterByAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.sortBy.setAdapter(filterByAdapter);
-        binding.sortBy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            filterByList.add(reasons[i].toString());
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                reloadData();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-
-        });
+        binding.filterBy.setItems(filterByList);
+        binding.filterBy.setSelectedIndex(0);
+        binding.filterBy.setOnItemSelectedListener((view, position, id, item) -> reloadData());
     }
 
     @Override
@@ -67,31 +55,16 @@ public class ExpenseListActivity extends AppCompatActivity {
     }
 
     private void reloadData() {
-        List<Expense> data;
 
-        int filterSelection = binding.sortBy.getSelectedItemPosition();
-        float currentBalance;
+        int filterSelection = binding.filterBy.getSelectedIndex();
 
-        switch (filterSelection) {
-
-            case 0:
-
-                data = ExpenseEngine.getInstance().getExpenses();
-                currentBalance = ExpenseEngine.getInstance().getMainBalance();
-                break;
-
-            default:
-
-                data = ExpenseEngine.getInstance().getExpenses(filterBy[filterSelection]);
-                currentBalance = ExpenseEngine.getInstance().getBalance(filterBy[filterSelection]);
-                break;
-
-        }
+        List<Expense> data = ExpenseEngine.getInstance().getExpenses(filterByList.get(filterSelection));
+        float currentBalance = ExpenseEngine.getInstance().getBalance(filterByList.get(filterSelection));
 
         binding.tvPlaceholder.setVisibility((data == null || data.isEmpty())
                 ? View.VISIBLE : View.GONE);
         adapter.setData(data);
-        binding.tvCurrentBalance.setText(String.format(Locale.getDefault(), "%,.2f", currentBalance));
+        binding.tvCurrentBalance.setText(String.format(Locale.getDefault(), "Balance %,.2f", currentBalance));
     }
 
 }
