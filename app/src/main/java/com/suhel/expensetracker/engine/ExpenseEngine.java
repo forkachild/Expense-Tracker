@@ -21,16 +21,16 @@ public class ExpenseEngine {
         return INSTANCE;
     }
 
-    public synchronized List<Expense> getExpenses() {
+    public synchronized List<Expense> getAllExpenses() {
         return Realm.getDefaultInstance().where(Expense.class).findAll();
     }
 
-    public synchronized List<Expense> getExpenses(String reason) {
+    public synchronized List<Expense> getAllExpenses(String reason) {
         return Realm.getDefaultInstance().where(Expense.class).equalTo("reason", reason).findAll();
     }
 
     public synchronized void addExpense(float amount, Expense.Type type, Expense.Reason reason, String comment) {
-        Realm.getDefaultInstance().executeTransaction((realm) -> {
+        Realm.getDefaultInstance().executeTransaction(realm -> {
             float balance = updateMainBalance(realm, type, amount);
             updateReasonBalance(realm, type, reason, amount);
             Expense expense = new Expense(amount, balance, type, reason, comment);
@@ -52,6 +52,12 @@ public class ExpenseEngine {
         if (balance == null)
             return 0.0f;
         return balance.getBalance();
+    }
+
+    public synchronized void reset() {
+        Realm.getDefaultInstance().executeTransaction(realm -> {
+            realm.deleteAll();
+        });
     }
 
     private float updateMainBalance(Realm realm, Expense.Type type, float amount) {

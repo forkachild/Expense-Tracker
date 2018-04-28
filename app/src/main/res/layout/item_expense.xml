@@ -55,13 +55,30 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvCumulativeBalance"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:textColor="@android:color/black"
-            android:textSize="7pt" />
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_cumulative"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="6pt" />
+
+            <TextView
+                android:id="@+id/tvCumulativeBalance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="8pt"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

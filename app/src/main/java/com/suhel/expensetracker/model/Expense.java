@@ -128,6 +128,8 @@ public class Expense extends RealmObject {
 
         public static final Reason[] values = values();
 
+        public static final String[] exhaustiveString = exhaustive();
+
         public static Reason fromString(String string) {
             switch (string) {
 
@@ -171,6 +173,15 @@ public class Expense extends RealmObject {
 
                     return OTHER;
             }
+        }
+
+        private static String[] exhaustive() {
+            Reason[] reasons = values();
+            String[] exhaustive = new String[reasons.length + 1];
+            exhaustive[0] = "All";
+            for (int i = 0; i < reasons.length; i++)
+                exhaustive[i + 1] = reasons[i].toString();
+            return exhaustive;
         }
 
         @Override

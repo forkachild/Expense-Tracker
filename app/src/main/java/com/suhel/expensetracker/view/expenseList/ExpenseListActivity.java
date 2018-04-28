@@ -4,67 +4,95 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.jaredrummler.materialspinner.MaterialSpinner;
-import com.jaredrummler.materialspinner.MaterialSpinnerAdapter;
 import com.suhel.expensetracker.R;
 import com.suhel.expensetracker.databinding.ActivityExpenseListBinding;
 import com.suhel.expensetracker.engine.ExpenseEngine;
 import com.suhel.expensetracker.model.Expense;
 import com.suhel.expensetracker.view.addExpense.AddExpenseActivity;
+import com.suhel.expensetracker.view.settings.SettingsActivity;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class ExpenseListActivity extends AppCompatActivity {
 
     private ActivityExpenseListBinding binding;
-    private ExpenseListAdapter adapter = new ExpenseListAdapter();
-
-    private List<String> filterByList;
+    private ExpensePagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_expense_list);
         setSupportActionBar(binding.toolbar);
-        binding.list.setLayoutManager(new LinearLayoutManager(this));
-        binding.list.setAdapter(adapter);
-        binding.btnAddExpense.setOnClickListener(v -> startActivity(
-                new Intent(ExpenseListActivity.this, AddExpenseActivity.class)));
+        binding.btnAddExpense.setOnClickListener(v -> startActivityForResult(
+                new Intent(ExpenseListActivity.this, AddExpenseActivity.class), 101));
+        pagerAdapter = new ExpensePagerAdapter(getSupportFragmentManager());
+        binding.pager.setAdapter(pagerAdapter);
+        binding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+        binding.tabs.setupWithViewPager(binding.pager);
+        binding.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-        Expense.Reason[] reasons = Expense.Reason.values;
-        filterByList = new ArrayList<>(reasons.length + 1);
-        filterByList.add("All");
-        for (int i = 0; i < reasons.length; i++)
-            filterByList.add(reasons[i].toString());
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        binding.filterBy.setItems(filterByList);
-        binding.filterBy.setSelectedIndex(0);
-        binding.filterBy.setOnItemSelectedListener((view, position, id, item) -> reloadData());
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                updateTotal(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+
+        });
+        updateTotal(0);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        reloadData();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_expense_list, menu);
+        return true;
     }
 
-    private void reloadData() {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.itemSettings) {
+            startActivityForResult(new Intent(this, SettingsActivity.class), 100);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-        int filterSelection = binding.filterBy.getSelectedIndex();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        List<Expense> data = ExpenseEngine.getInstance().getExpenses(filterByList.get(filterSelection));
-        float currentBalance = ExpenseEngine.getInstance().getBalance(filterByList.get(filterSelection));
+        if (resultCode == RESULT_OK) {
 
-        binding.tvPlaceholder.setVisibility((data == null || data.isEmpty())
-                ? View.VISIBLE : View.GONE);
-        adapter.setData(data);
-        binding.tvCurrentBalance.setText(String.format(Locale.getDefault(), "Balance %,.2f", currentBalance));
+            if (requestCode == 100) {
+                ExpenseEngine.getInstance().reset();
+                recreate();
+            } else if (requestCode == 101) {
+                updateTotal(binding.pager.getCurrentItem());
+            }
+
+        }
+
+    }
+
+    private void updateTotal(int position) {
+        float currentBalance = ExpenseEngine.getInstance().getBalance(
+                Expense.Reason.exhaustiveString[position]);
+        binding.tvCurrentBalance.setText(String.format(Locale.getDefault(),
+                "Total %,.2f", currentBalance));
     }
 
 }

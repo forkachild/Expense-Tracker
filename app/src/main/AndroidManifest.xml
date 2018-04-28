@@ -10,7 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".view.expenseList.ExpenseListActivity"
             android:configChanges="screenSize|orientation"
@@ -21,13 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.addExpense.AddExpenseActivity"
             android:configChanges="screenSize|orientation"
             android:label="@string/title_add_expense"
             android:windowSoftInputMode="adjustResize" />
-
+        <activity
+            android:name=".view.settings.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

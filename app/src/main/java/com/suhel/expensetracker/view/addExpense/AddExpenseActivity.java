@@ -98,6 +98,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         if (validate()) {
             ExpenseEngine.getInstance().addExpense(getAmount(), getType(), getReason(),
                     getComment());
+            setResult(RESULT_OK);
             onBackPressed();
         }
     }
