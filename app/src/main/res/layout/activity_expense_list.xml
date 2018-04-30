@@ -51,7 +51,7 @@
             android:orientation="vertical"
             android:paddingBottom="8dp"
             android:paddingEnd="24dp"
-            android:paddingStart="16dp"
+            android:paddingStart="12dp"
             android:paddingTop="8dp">
 
             <TextView
@@ -59,8 +59,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="8pt"
-                android:textStyle="bold" />
+                android:textSize="7pt" />
+
+            <TextView
+                android:id="@+id/tvTotalCredit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@android:color/white"
+                android:textSize="7pt" />
+
+            <TextView
+                android:id="@+id/tvTotalDebit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@android:color/white"
+                android:textSize="7pt" />
 
         </LinearLayout>
 

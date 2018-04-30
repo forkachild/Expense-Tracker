@@ -1,39 +1,40 @@
-package com.suhel.expensetracker.view.expenseList;
+package com.suhel.expensetracker.view.expenseList.pie;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.suhel.expensetracker.databinding.FragmentExpenseListBinding;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.realm.implementation.RealmPieDataSet;
+import com.suhel.expensetracker.Constants;
+import com.suhel.expensetracker.databinding.FragmentExpensePieBinding;
 import com.suhel.expensetracker.engine.ExpenseEngine;
 import com.suhel.expensetracker.model.Expense;
 
 import java.util.List;
 
-public class ExpenseListFragment extends Fragment {
+import io.realm.RealmResults;
 
-    private FragmentExpenseListBinding binding;
-    private ExpenseListAdapter adapter = new ExpenseListAdapter();
+public class ExpensePieFragment extends Fragment {
+
+    private FragmentExpensePieBinding binding;
     private String filter = null;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return (binding = FragmentExpenseListBinding.inflate(inflater, container, false)).getRoot();
+        return (binding = FragmentExpensePieBinding.inflate(inflater, container, false)).getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.list.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.list.setAdapter(adapter);
         if (getArguments() != null)
-            filter = getArguments().getString("FILTER", null);
+            filter = getArguments().getString(Constants.Key.Filter, null);
     }
 
     @Override
@@ -47,7 +48,15 @@ public class ExpenseListFragment extends Fragment {
 
         binding.tvPlaceholder.setVisibility((data == null || data.isEmpty()) ?
                 View.VISIBLE : View.GONE);
-        adapter.setData(data);
+        binding.pie.setVisibility((data == null || data.isEmpty()) ?
+                View.GONE : View.VISIBLE);
+
+        if (data != null && !data.isEmpty()) {
+            RealmPieDataSet<Expense> dataSet = new RealmPieDataSet<>((RealmResults<Expense>) data,
+                    "amount", "reason");
+            binding.pie.setData(new PieData(dataSet));
+            binding.pie.invalidate();
+        }
 
     }
 

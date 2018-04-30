@@ -41,7 +41,6 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         binding.reasonList.setLayoutManager(layoutManager);
         binding.reasonList.setAdapter(adapter);
-        adapter.setData(Expense.Reason.values);
     }
 
     @Override
@@ -66,9 +65,9 @@ public class AddExpenseActivity extends AppCompatActivity {
     private Expense.Type getType() {
         int id = binding.radioType.getCheckedRadioButtonId();
         if (id == R.id.radioCredit)
-            return Expense.Type.CREDIT;
+            return Expense.Type.Credit;
         else
-            return Expense.Type.DEBIT;
+            return Expense.Type.Debit;
     }
 
     @NonNull

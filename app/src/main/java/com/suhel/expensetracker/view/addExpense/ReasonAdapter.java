@@ -1,6 +1,5 @@
 package com.suhel.expensetracker.view.addExpense;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +15,10 @@ public class ReasonAdapter extends RecyclerView.Adapter<ReasonAdapter.ReasonView
     private int selection = 0;
     private Expense.Reason[] data;
 
+    ReasonAdapter() {
+        data = Expense.Reason.values;
+    }
+
     @NonNull
     @Override
     public ReasonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -28,30 +31,25 @@ public class ReasonAdapter extends RecyclerView.Adapter<ReasonAdapter.ReasonView
         holder.bind(getItem(position));
     }
 
-    public void setData(Expense.Reason[] data) {
-        this.data = data;
-        notifyDataSetChanged();
-    }
-
-    public Expense.Reason getItem(int position) {
-        return data[position];
+    private Expense.Reason getItem(int position) {
+        return data[position + 1];
     }
 
     @Override
     public int getItemCount() {
-        return data != null ? data.length : 0;
+        return data != null ? data.length - 1 : 0;
     }
 
     @NonNull
     public Expense.Reason getSelected() {
-        return data[selection];
+        return getItem(selection);
     }
 
     class ReasonViewHolder extends RecyclerView.ViewHolder {
 
         private ItemReasonBinding binding;
 
-        public ReasonViewHolder(ItemReasonBinding binding) {
+        ReasonViewHolder(ItemReasonBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             binding.getRoot().setOnClickListener(v -> {

@@ -43,12 +43,12 @@ public class SettingsActivity extends AppCompatActivity implements SettingsAdapt
     public void onClick(SettingsType settingsType) {
         if (settingsType == SettingsType.ResetEverything) {
             new AlertDialog.Builder(this)
-                    .setMessage("Are you sure you want to delete everything?")
-                    .setPositiveButton("Yes", (dialog, which) ->
+                    .setMessage(R.string.text_reset_warning)
+                    .setPositiveButton(getString(R.string.text_yes), (dialog, which) ->
                             Toast.makeText(this,
-                                    "The longer you press, the better it works",
+                                    R.string.text_funny,
                                     Toast.LENGTH_SHORT).show())
-                    .setNegativeButton("No", null)
+                    .setNegativeButton(getString(R.string.text_no), null)
                     .show();
         }
     }
@@ -57,12 +57,12 @@ public class SettingsActivity extends AppCompatActivity implements SettingsAdapt
     public void onLongClick(SettingsType settingsType) {
         if (settingsType == SettingsType.ResetEverything) {
             new AlertDialog.Builder(this)
-                    .setMessage("Are you sure you want to delete everything?")
-                    .setPositiveButton("Yes", (dialog, which) -> {
+                    .setMessage(R.string.text_reset_warning)
+                    .setPositiveButton(getString(R.string.text_yes), (dialog, which) -> {
                         setResult(RESULT_OK);
                         onBackPressed();
                     })
-                    .setNegativeButton("No", null)
+                    .setNegativeButton(getString(R.string.text_no), null)
                     .show();
         }
     }

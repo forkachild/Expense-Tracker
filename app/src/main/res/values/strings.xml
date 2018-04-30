@@ -89,4 +89,8 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="text_cumulative">Cumulative</string>
+    <string name="text_reset_warning">Are you sure you want to delete everything?</string>
+    <string name="text_funny">The longer you press, the better it works</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
 </resources>

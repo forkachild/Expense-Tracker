@@ -77,159 +77,26 @@ public class Expense extends RealmObject {
 
     public enum Type {
 
-        CREDIT,
-        DEBIT;
-
-        public static Type fromString(String string) {
-            switch (string) {
-
-                case "Credit":
-
-                    return CREDIT;
-
-                case "Debit":
-
-                    return DEBIT;
-
-            }
-            return null;
-        }
-
-        @Override
-        public String toString() {
-            switch (this) {
-
-                case CREDIT:
-
-                    return "Credit";
-
-                case DEBIT:
-
-                    return "Debit";
-
-            }
-            return null;
-        }
+        Credit,
+        Debit;
 
     }
 
     public enum Reason {
 
-        FOOD,
-        HOTEL,
-        CIGARETTE,
-        FUEL,
-        ALCOHOL,
-        SHOPPING,
-        LOAN,
-        SALARY,
-        TRANSPORT,
-        OTHER;
+        All,
+        Food,
+        Hotel,
+        Cigarette,
+        Fuel,
+        Alcohol,
+        Shopping,
+        Loan,
+        Salary,
+        Transport,
+        Other;
 
         public static final Reason[] values = values();
-
-        public static final String[] exhaustiveString = exhaustive();
-
-        public static Reason fromString(String string) {
-            switch (string) {
-
-                case "Food":
-
-                    return FOOD;
-
-                case "Hotel":
-
-                    return HOTEL;
-
-                case "Cigarette":
-
-                    return CIGARETTE;
-
-                case "Fuel":
-
-                    return FUEL;
-
-                case "Alcohol":
-
-                    return ALCOHOL;
-
-                case "Shopping":
-
-                    return SHOPPING;
-
-                case "Loan":
-
-                    return LOAN;
-
-                case "Salary":
-
-                    return SALARY;
-
-                case "Transport":
-
-                    return TRANSPORT;
-
-                default:
-
-                    return OTHER;
-            }
-        }
-
-        private static String[] exhaustive() {
-            Reason[] reasons = values();
-            String[] exhaustive = new String[reasons.length + 1];
-            exhaustive[0] = "All";
-            for (int i = 0; i < reasons.length; i++)
-                exhaustive[i + 1] = reasons[i].toString();
-            return exhaustive;
-        }
-
-        @Override
-        public String toString() {
-            switch (this) {
-
-                case FOOD:
-
-                    return "Food";
-
-                case HOTEL:
-
-                    return "Hotel";
-
-                case CIGARETTE:
-
-                    return "Cigarette";
-
-                case FUEL:
-
-                    return "Fuel";
-
-                case ALCOHOL:
-
-                    return "Alcohol";
-
-                case SHOPPING:
-
-                    return "Shopping";
-
-                case LOAN:
-
-                    return "Loan";
-
-                case SALARY:
-
-                    return "Salary";
-
-                case TRANSPORT:
-
-                    return "Transport";
-
-                default:
-
-                    return "Other";
-
-            }
-        }
 
     }
 

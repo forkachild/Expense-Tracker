@@ -10,11 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.suhel.expensetracker.Constants;
 import com.suhel.expensetracker.R;
 import com.suhel.expensetracker.databinding.ActivityExpenseListBinding;
 import com.suhel.expensetracker.engine.ExpenseEngine;
 import com.suhel.expensetracker.model.Expense;
 import com.suhel.expensetracker.view.addExpense.AddExpenseActivity;
+import com.suhel.expensetracker.view.expenseList.list.ExpenseListPagerAdapter;
 import com.suhel.expensetracker.view.settings.SettingsActivity;
 
 import java.util.Locale;
@@ -22,7 +24,7 @@ import java.util.Locale;
 public class ExpenseListActivity extends AppCompatActivity {
 
     private ActivityExpenseListBinding binding;
-    private ExpensePagerAdapter pagerAdapter;
+    private ExpenseListPagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class ExpenseListActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         binding.btnAddExpense.setOnClickListener(v -> startActivityForResult(
                 new Intent(ExpenseListActivity.this, AddExpenseActivity.class), 101));
-        pagerAdapter = new ExpensePagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new ExpenseListPagerAdapter(getSupportFragmentManager());
         binding.pager.setAdapter(pagerAdapter);
         binding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         binding.tabs.setupWithViewPager(binding.pager);
@@ -77,10 +79,10 @@ public class ExpenseListActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
 
-            if (requestCode == 100) {
+            if (requestCode == Constants.RequestCode.Reset) {
                 ExpenseEngine.getInstance().reset();
                 recreate();
-            } else if (requestCode == 101) {
+            } else if (requestCode == Constants.RequestCode.Add) {
                 updateTotal(binding.pager.getCurrentItem());
             }
 
@@ -89,10 +91,18 @@ public class ExpenseListActivity extends AppCompatActivity {
     }
 
     private void updateTotal(int position) {
-        float currentBalance = ExpenseEngine.getInstance().getBalance(
-                Expense.Reason.exhaustiveString[position]);
+        Expense.Reason reason = Expense.Reason.values[position];
+
+        float currentBalance = ExpenseEngine.getInstance().getBalance(reason);
+        float totalCredit = ExpenseEngine.getInstance().getTotalCredit(reason);
+        float totalDebit = ExpenseEngine.getInstance().getTotalDebit(reason);
+
         binding.tvCurrentBalance.setText(String.format(Locale.getDefault(),
-                "Total %,.2f", currentBalance));
+                "Balance %,.2f", currentBalance));
+        binding.tvTotalCredit.setText(String.format(Locale.getDefault(),
+                "Credit %,.2f", totalCredit));
+        binding.tvTotalDebit.setText(String.format(Locale.getDefault(),
+                "Debit %,.2f", totalDebit));
     }
 
 }

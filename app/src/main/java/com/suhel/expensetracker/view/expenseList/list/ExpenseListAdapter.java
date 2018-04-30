@@ -1,4 +1,4 @@
-package com.suhel.expensetracker.view.expenseList;
+package com.suhel.expensetracker.view.expenseList.list;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -56,7 +56,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         }
 
         void bind(Expense expense) {
-            boolean isCredit = expense.getType().equals("Credit");
+            boolean isCredit = expense.getType().equals(Expense.Type.Credit.toString());
             binding.tvAmount.setText(String.format(Locale.getDefault(), "%c %,.2f",
                     isCredit ? '+' : '-', expense.getAmount()));
             binding.tvAmount.setTextColor(isCredit ? 0xFF4CAF50 : 0xFFE53935);
