@@ -45,21 +45,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|bottom"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/bg_half_rounded_corner_blue"
             android:elevation="4dp"
             android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:paddingEnd="24dp"
+            android:paddingBottom="12dp"
+            android:paddingEnd="12dp"
             android:paddingStart="12dp"
-            android:paddingTop="8dp">
+            android:paddingTop="12dp">
 
             <TextView
                 android:id="@+id/tvCurrentBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="7pt" />
+                android:textSize="7pt"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTotalCredit"
@@ -67,7 +68,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textColor="@android:color/white"
-                android:textSize="7pt" />
+                android:textSize="7pt"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTotalDebit"
@@ -75,7 +77,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textColor="@android:color/white"
-                android:textSize="7pt" />
+                android:textSize="7pt"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
